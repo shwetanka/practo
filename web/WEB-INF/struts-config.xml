@@ -5,4 +5,13 @@
         "http://struts.apache.org/dtds/struts-config_1_3.dtd">
 
 <struts-config>
+    <form-beans>
+        <form-bean name="TicketForm" type="com.practo.TicketForm"/>
+    </form-beans>
+    <action-mappings>
+        <action path="/" name="TicketForm" parameter="action" type="org.springframework.web.struts.DelegatingActionProxy"></action>
+    </action-mappings>
+    <plug-in className="org.springframework.web.struts.ContextLoaderPlugIn">
+        <set-property property="contextConfigLocation" value="classpath:spring-config.xml"/>
+    </plug-in>
 </struts-config>
