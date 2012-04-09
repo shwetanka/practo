@@ -4,7 +4,13 @@ import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Authenticator;
+import java.net.HttpURLConnection;
+import java.net.PasswordAuthentication;
+import java.net.URL;
 
 /**
  * Company: AcStack
@@ -34,8 +40,36 @@ public class HttpUtil {
     return null;
   }
 
+  public static String getResponse(URL url) throws Exception{
+    HttpURLConnection con;
+    con = (HttpURLConnection) url.openConnection();
+    con.setRequestMethod("GET");
+    con.setInstanceFollowRedirects(true);
+//    Authenticator.setDefault(new Authenticator(){
+//      @Override
+//      protected PasswordAuthentication getPasswordAuthentication() {
+//        return new PasswordAuthentication("shwetanka@gmail.com", "@myTest123".toCharArray());
+//      }
+//    });
+    con.setRequestProperty("Authorization", "Basic "+ com.google.appengine.repackaged.com.google.common.util.Base64.encodeWebSafe("shwetanka@gmail.com:@myTest123".getBytes(), true));
+    BufferedReader bf = new BufferedReader(new InputStreamReader(con.getInputStream()));
+    String response = "";
+    String str;
+    while((str=bf.readLine())!=null){
+      response+=str;
+    }
+    bf.close();
+    return response;
+  }
 
   public static void main(String arg[]){
-    System.out.println(getResponse("http://practo.zendesk.com/tickets/2.json"));
+    //System.out.println(getResponse("http://practo.zendesk.com/tickets/2.json"));
+    try{
+      URL url = new URL(Urls.OPEN_TICKETS_URL);
+      String response = getResponse(url);
+      System.out.println(response);
+    }catch (Exception e){
+
+    }
   }
 }

@@ -14,16 +14,25 @@ import java.util.List;
  * Time: 12:58:35 PM
  */
 public class ZendeskTicket {
-  private Integer niceId;
-  private Integer assigneeId;
+  private Long niceId;
+  private Long assigneeId;
   private TicketType type;
   private TicketStatus status;
   private TicketPriority priority;
-  private Integer submitterId;
+  private Long submitterId;
   private String subject;
   private String description;
   private List<TicketComment> comments;
   private Date creationTime;
+  private Date solvedTime;
+
+  public Date getSolvedTime() {
+    return solvedTime;
+  }
+
+  public void setSolvedTime(Date solvedTime) {
+    this.solvedTime = solvedTime;
+  }
 
   public Date getCreationTime() {
     return creationTime;
@@ -41,19 +50,19 @@ public class ZendeskTicket {
     this.comments = comments;
   }
 
-  public Integer getNiceId() {
+  public Long getNiceId() {
     return niceId;
   }
 
-  public void setNiceId(Integer niceId) {
+  public void setNiceId(Long niceId) {
     this.niceId = niceId;
   }
 
-  public Integer getAssigneeId() {
+  public Long getAssigneeId() {
     return assigneeId;
   }
 
-  public void setAssigneeId(Integer assigneeId) {
+  public void setAssigneeId(Long assigneeId) {
     this.assigneeId = assigneeId;
   }
 
@@ -81,11 +90,11 @@ public class ZendeskTicket {
     this.priority = priority;
   }
 
-  public Integer getSubmitterId() {
+  public Long getSubmitterId() {
     return submitterId;
   }
 
-  public void setSubmitterId(Integer submitterId) {
+  public void setSubmitterId(Long submitterId) {
     this.submitterId = submitterId;
   }
 

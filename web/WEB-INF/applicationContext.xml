@@ -2,5 +2,5 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-    <bean id="ZendeskApiBc"></bean>
+    <bean id="zendeskApiBc" class="com.practo.bc.ZendeskApiBc"></bean>
 </beans>

@@ -22,4 +22,23 @@ public enum TicketPriority {
   public void setPriority(Integer priority) {
     this.priority = priority;
   }
+
+  public static TicketPriority getPriorityByValue(Integer val){
+    if(val==null || val < 0){
+      return null;
+    }
+    if(val == 0){
+      return NO_PRIORITY_SET;
+    }else if(val == 1){
+      return LOW;
+    }else if(val == 2){
+      return NORMAL;
+    } else if(val == 3){
+      return HIGH;
+    }else if(val == 4){
+      return URGENT;
+    }else {
+      return null;
+    }
+  }
 }

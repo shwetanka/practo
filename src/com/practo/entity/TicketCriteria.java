@@ -1,5 +1,6 @@
 package com.practo.entity;
 
+import com.practo.enums.ReportType;
 import com.practo.enums.TicketPriority;
 import com.practo.enums.TicketStatus;
 
@@ -11,9 +12,16 @@ import com.practo.enums.TicketStatus;
  */
 public class TicketCriteria {
   private TicketStatus status;
-  private boolean forDay;
-  private boolean forWeek;
+  private ReportType type;
   private TicketPriority priority;
+
+  public ReportType getType() {
+    return type;
+  }
+
+  public void setType(ReportType type) {
+    this.type = type;
+  }
 
   public TicketPriority getPriority() {
     return priority;
@@ -31,19 +39,4 @@ public class TicketCriteria {
     this.status = status;
   }
 
-  public boolean isForDay() {
-    return forDay;
-  }
-
-  public void setForDay(boolean forDay) {
-    this.forDay = forDay;
-  }
-
-  public boolean isForWeek() {
-    return forWeek;
-  }
-
-  public void setForWeek(boolean forWeek) {
-    this.forWeek = forWeek;
-  }
 }

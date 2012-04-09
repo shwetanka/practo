@@ -15,6 +15,24 @@ public class TicketForm extends ActionForm{
   private TicketStatus status;
   private ReportType reportType;
   private TicketPriority priority;
+  private Integer statusId;
+  private String strType;
+
+  public Integer getStatusId() {
+    return statusId;
+  }
+
+  public void setStatusId(Integer statusId) {
+    this.statusId = statusId;
+  }
+
+  public String getStrType() {
+    return strType;
+  }
+
+  public void setStrType(String strType) {
+    this.strType = strType;
+  }
 
   public TicketPriority getPriority() {
     return priority;
