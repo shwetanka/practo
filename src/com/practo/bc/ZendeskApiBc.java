@@ -86,6 +86,8 @@ public class ZendeskApiBc {
       }
       if(type && status){
         result.add(ticket);
+        type=false;
+        status = false;
       }
     }
     return result.size()>0?result:null;
