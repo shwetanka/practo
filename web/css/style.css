@@ -1,0 +1,9 @@
+body {margin:0;padding:0;}
+.container {width:80%;margin:auto;}
+.h1 {font-size:24px;font-weight:bold;}
+.search{background-color:#f5f8f9;font-size:20px;width:99%;padding-left:1%;padding-bottom:5px;border:1px solid #c1d1da;margin-bottom:10px;}
+.search h3 {margin-left:1%}
+.search .formDiv {margin-left:1%;}
+.results {width:100%;background-color:#fff0f0;border:1px solid #c1d1da;}
+tr {border-left:1px solid #afafaf;border-top:1px solid #afafaf;}
+td, th {border-top:1px solid #afafaf;border-right:1px solid #afafaf;}
