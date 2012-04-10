@@ -18,7 +18,7 @@
               <html:options collection="reportTypes" labelProperty="typeName" labelName="typeName" property="reportType"/>
           </html:select>
           <html:select property="statusId">
-              <html:option value="All">All</html:option>
+              <html:option value="-1">All</html:option>
               <html:options collection="statusTypes" labelName="statusType" labelProperty="statusType" property="statusId"/>
           </html:select>
           <html:submit value="search"></html:submit>

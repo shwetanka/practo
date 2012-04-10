@@ -48,14 +48,10 @@ public class IndexAction extends DispatchAction{
     TicketStatus status = TicketStatus.getStatusByValue(form.getStatusId());
     if(status!=null){
       criteria.setStatus(status);
-    }else {
-      criteria.setStatus(TicketStatus.OPEN);
     }
     ReportType type = ReportType.getReportTypeByValue(form.getStrType());
     if(type!=null){
       criteria.setType(type);
-    }else {
-      criteria.setType(ReportType.DAILY);
     }
     return criteria;
   }
