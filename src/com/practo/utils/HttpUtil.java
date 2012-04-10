@@ -7,9 +7,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.Authenticator;
 import java.net.HttpURLConnection;
-import java.net.PasswordAuthentication;
 import java.net.URL;
 
 /**
@@ -65,7 +63,7 @@ public class HttpUtil {
   public static void main(String arg[]){
     //System.out.println(getResponse("http://practo.zendesk.com/tickets/2.json"));
     try{
-      URL url = new URL(Urls.OPEN_TICKETS_URL);
+      URL url = new URL(Urls.ALL_TICKETS_URL);
       String response = getResponse(url);
       System.out.println(response);
     }catch (Exception e){

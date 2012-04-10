@@ -1,10 +1,11 @@
 package com.practo.bc;
 
-import com.google.gson.JsonObject;
 import com.practo.entity.TicketCriteria;
 import com.practo.entity.ZendeskTicket;
+import com.practo.enums.ReportType;
 import com.practo.enums.TicketPriority;
 import com.practo.enums.TicketStatus;
+import com.practo.utils.DateUtil;
 import com.practo.utils.HttpUtil;
 import com.practo.utils.Urls;
 import org.json.simple.JSONArray;
@@ -33,7 +34,7 @@ public class ZendeskApiBc {
         url = new URL(Urls.SOLVED_TICKETS_URL);
         response = HttpUtil.getResponse(url);
       }else {
-        url = new URL(Urls.OPEN_TICKETS_URL);
+        url = new URL(Urls.ALL_TICKETS_URL);
         response = HttpUtil.getResponse(url);
       }
     }catch (Exception e){
@@ -50,10 +51,44 @@ public class ZendeskApiBc {
           copy(ticket, jb);
           tickets.add(ticket);
         }
-        return tickets;
+        List<ZendeskTicket> result = processTickets(tickets, criteria);
+        return result;
       }
     }
     return null;
+  }
+
+  private List<ZendeskTicket> processTickets(List<ZendeskTicket> tickets, TicketCriteria criteria){
+    List<ZendeskTicket> result = new ArrayList<ZendeskTicket>();
+    boolean status = false;
+    boolean priority;
+    boolean type = false;
+    for(ZendeskTicket ticket : tickets){
+      if(criteria.getStatus()!=null){
+        if(ticket.getStatus().equals(criteria.getStatus())){
+          status = true;
+        }
+      }else {
+        status = true;
+      }
+      if(criteria.getType()!=null){
+        if(criteria.getType().equals(ReportType.DAILY)){
+          if(DateUtil.isToday(ticket.getStatusUpdateTime())){
+            type = true;
+          }
+        }else if(criteria.getType().equals(ReportType.WEEKLY)){
+          if(DateUtil.isInWeek(ticket.getStatusUpdateTime())){
+            type = true;
+          }
+        }
+      }else {
+        type = true;
+      }
+      if(type && status){
+        result.add(ticket);
+      }
+    }
+    return result.size()>0?result:null;
   }
 
   private void copy(ZendeskTicket ticket, JSONObject jb){
@@ -67,7 +102,7 @@ public class ZendeskApiBc {
     ticket.setStatus(TicketStatus.getStatusByValue(l.intValue()));
     ticket.setSubject((String)jb.get("subject"));
     ticket.setSubmitterId((Long) jb.get("submitter_id"));
-    ticket.setSolvedTime(getDate((String) jb.get("status_updated_at")));
+    ticket.setStatusUpdateTime(getDate((String) jb.get("status_updated_at")));
   }
   private Date getDate(String date){ // This expect date in yyyy/MM/dd hh:mm:ss Z
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss z");

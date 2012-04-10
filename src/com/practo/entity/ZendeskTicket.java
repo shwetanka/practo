@@ -25,6 +25,15 @@ public class ZendeskTicket {
   private List<TicketComment> comments;
   private Date creationTime;
   private Date solvedTime;
+  private Date statusUpdateTime;
+
+  public Date getStatusUpdateTime() {
+    return statusUpdateTime;
+  }
+
+  public void setStatusUpdateTime(Date statusUpdateTime) {
+    this.statusUpdateTime = statusUpdateTime;
+  }
 
   public Date getSolvedTime() {
     return solvedTime;
