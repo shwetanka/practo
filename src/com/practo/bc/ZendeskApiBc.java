@@ -15,9 +15,7 @@ import org.json.simple.JSONValue;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Company: AcStack
@@ -91,6 +89,111 @@ public class ZendeskApiBc {
       status = false;
     }
     return result.size()>0?result:null;
+  }
+
+  private Map<String, List<ZendeskTicket>> getTicketMap(){
+    Map<String, List<ZendeskTicket>> map = new HashMap<String, List<ZendeskTicket>>();
+    map.put(TicketStatus.NEW.toString(), null);
+    map.put(TicketStatus.OPEN.toString(), null);
+    map.put(TicketStatus.PENDING.toString(), null);
+    map.put(TicketStatus.SOLVED.toString(), null);
+    map.put(TicketStatus.CLOSED.toString(), null);
+    return map;
+  }
+
+  private void addToMap(Map<String, List<ZendeskTicket>> map, TicketStatus status, ZendeskTicket ticket){
+    List<ZendeskTicket> list = map.get(status.toString());
+    if(list==null){
+      list = new ArrayList<ZendeskTicket>();
+    }
+    list.add(ticket);
+    map.put(status.toString(), list);
+  }
+
+  public Map<String, List<ZendeskTicket>> getTicketsByReportType(ReportType type){
+    if(type == null){
+      return null;
+    }
+    Map<String, List<ZendeskTicket>> map = getTicketMap();
+    List<ZendeskTicket> allTickets = getAllTickets();
+
+    if(type.equals(ReportType.DAILY)){
+      for(ZendeskTicket ticket : allTickets){
+        if(DateUtil.isToday(ticket.getStatusUpdateTime())){
+          switch (ticket.getStatus()){
+            case NEW:
+              addToMap(map, TicketStatus.NEW, ticket);
+              break;
+            case OPEN:
+              addToMap(map, TicketStatus.OPEN, ticket);
+              break;
+            case PENDING:
+              addToMap(map, TicketStatus.PENDING, ticket);
+              break;
+            case SOLVED:
+              addToMap(map, TicketStatus.SOLVED, ticket);
+              break;
+            case CLOSED:
+              addToMap(map, TicketStatus.CLOSED, ticket);
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    }else if(type.equals(ReportType.WEEKLY)){
+      for(ZendeskTicket ticket : allTickets){
+        if(DateUtil.isInWeek(ticket.getStatusUpdateTime())){
+          switch (ticket.getStatus()){
+            case NEW:
+              addToMap(map, TicketStatus.NEW, ticket);
+              break;
+            case OPEN:
+              addToMap(map, TicketStatus.OPEN, ticket);
+              break;
+            case PENDING:
+              addToMap(map, TicketStatus.PENDING, ticket);
+              break;
+            case SOLVED:
+              addToMap(map, TicketStatus.SOLVED, ticket);
+              break;
+            case CLOSED:
+              addToMap(map, TicketStatus.CLOSED, ticket);
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    }
+
+    return map;
+  }
+
+  public List<ZendeskTicket> getAllTickets(){
+    String response;
+    URL url;
+    try{
+      url = new URL(Urls.ALL_TICKETS_URL);
+      response = HttpUtil.getResponse(url);
+    }catch (Exception e){
+      System.out.println("Error: "+e);
+      return null;
+    }
+    if(response!=null){
+      JSONArray array = (JSONArray) JSONValue.parse(response);
+      List<ZendeskTicket> tickets = new ArrayList<ZendeskTicket>();
+      if(array!=null && array.size()>0){
+        for(int i=0;i<array.size();i++){
+          JSONObject jb = (JSONObject) array.get(i);
+          ZendeskTicket ticket = new ZendeskTicket();
+          copy(ticket, jb);
+          tickets.add(ticket);
+        }
+        return tickets;
+      }
+    }
+    return null;
   }
 
   private void copy(ZendeskTicket ticket, JSONObject jb){

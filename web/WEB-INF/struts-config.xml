@@ -11,6 +11,7 @@
     <action-mappings>
         <action path="/report" name="TicketForm" parameter="action" type="org.springframework.web.struts.DelegatingActionProxy">
             <forward name="list" path="/index.jsp"/>
+            <forward name="report" path="/report.jsp"/>
         </action>
     </action-mappings>
     <plug-in className="org.springframework.web.struts.ContextLoaderPlugIn">

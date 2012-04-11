@@ -9,8 +9,10 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-  <head><title>Practo Task- Zendesk Api Sample</title></head>
-  <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+  <head>
+      <title>Practo Task- Zendesk Api Sample</title>
+      <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+  </head>
   <body>
   <div class="container">
   <h1>Sample Zendesk Reports</h1>

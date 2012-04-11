@@ -14,6 +14,7 @@ import org.apache.struts.actions.DispatchAction;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Company: AcStack
@@ -41,6 +42,21 @@ public class IndexAction extends DispatchAction{
     request.setAttribute("reportTypes", ReportType.values());
     request.setAttribute("statusTypes", TicketStatus.values());
     return mapping.findForward("list");
+  }
+
+  public ActionForward report(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response){
+    String type = request.getParameter("type");
+    if(type==null||type.equals("")){
+      type = "daily";
+    }
+    ReportType reportType = ReportType.getReportTypeByValue(type);
+    if(reportType == null){
+      reportType = ReportType.DAILY;
+    }
+    Map<String, List<ZendeskTicket>> map = this.zendeskApiBc.getTicketsByReportType(reportType);
+    request.setAttribute("ticketMap", map);
+    request.setAttribute("repType", reportType.toString().toLowerCase());
+    return mapping.findForward("report");
   }
 
   private TicketCriteria getTicketCriteriaFromForm(TicketForm form){
